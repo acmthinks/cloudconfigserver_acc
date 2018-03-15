@@ -4,7 +4,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/acmthinks/cloudconfigserver_acc
+          uri: https://github.com/acmthinks/configuration
           searchPaths: ConfigData
         # "native" is used when the native profile is active, for local tests with a classpath repo:
         native:
