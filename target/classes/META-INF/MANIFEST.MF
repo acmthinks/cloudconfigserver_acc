@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Implementation-Title: cloudconfigserver_acc
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: acmartinez
+Implementation-Vendor-Id: com.ibm.platform
+Build-Jdk: 1.8.0_151
+Implementation-URL: http://projects.spring.io/spring-boot/cloudconfigs
+ erver_acc/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+Main-Class: demo.Application
+
