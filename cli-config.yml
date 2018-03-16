@@ -51,6 +51,6 @@ chart-path : "chart/cloudconfigserver_acc"
 # The type of deployment target, if other than CF
 #deploy-target : "container"
 # The image name in the IBM Cloud private registry to use
-#deploy-image-target : "registry.ng.bluemix.net/hello_acc/gapstrainingbff"
+#deploy-image-target : "registry.ng.bluemix.net/<your_ICS_userspace_name>/<your_ICS_registry_name>"
 # The K8s cluster name to deploy to in IBM Cloud
-#ibm-cluster : "mycluster"
+#ibm-cluster : "<your_ICS_cluster_name>"
