@@ -5,7 +5,7 @@
 
 	<groupId>com.ibm.platform</groupId>
 	<artifactId>cloudconfigserver_acc</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>cloudconfigserver_acc</name>
@@ -20,7 +20,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>demo.Application</start-class>
+		<start-class>com.ibm.platform.ConfigServer</start-class>
 		<java.version>1.8</java.version>
 	</properties>
 
