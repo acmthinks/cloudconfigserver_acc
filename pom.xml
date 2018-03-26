@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.ibm.platform</groupId>
-	<artifactId>cloudconfigserver_acc</artifactId>
+	<artifactId>cloudconfigserveracc</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>cloudconfigserver_acc</name>
+	<name>cloudconfigserveracc</name>
 	<description>Spring Config Server project for Spring Boot</description>
 
 	<parent>
