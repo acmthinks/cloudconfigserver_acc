@@ -1,9 +1,15 @@
-/* Requires the Docker Pipeline plugin */
+/* DevOps Pipeline */
 node('master') {
-    checkout scm
+    stage('Checkout') {
+        echo "Checkout"
+    }
     stage('Build') {
-        docker.image('maven:3.3.3').inside {
-            sh 'mvn --version'
-        }
+        echo "compile"
+        echo "package"
+        echo "unit test"
+        echo "static analysis tests"
+    }
+    stage('Deploy to IBM Cloud') {
+        echo "integration tests"
     }
 }
