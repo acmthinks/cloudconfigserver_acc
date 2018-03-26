@@ -25,7 +25,7 @@ node {
    stage('Deploy (dev)') {
       //deploy to IBM Cloud (public)
       withCredentials([string(credentialsId: 'BLUEMIX', variable: 'bluemix_api')]) {
-      	cf login --apikey $bluemix_api
+      	cf login -a https://api.ng.bluemix.net -u apikey -p $bluemix_api
       	cf target -o acm@us.ibm.com -s dev
       	cf logout
       }
