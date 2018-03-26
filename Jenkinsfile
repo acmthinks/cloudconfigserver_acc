@@ -1,37 +1,26 @@
-pipeline {
-     
-    tools {
-    		maven "apache-maven-3.1.0"
-    		jdk "default"
-	}
-	
-	//run on any agent
-	agent any
-	
-	
-    stages {
-        stage('Build') { 
-            steps {
-                echo "Checkout"
-                // create a directory called "tmp" and cd into that directory
-        			dir("tmp") {
-          			// use git to retrieve the plugin-pom
-          			git changelog: false, poll: false, url: 'git://github.com/acmthinks/cloudconfigacc.git', branch: 'master'
-          			sh 'echo "M2_HOME: ${M2_HOME}"'
-          			sh 'echo "JAVA_HOME: ${JAVA_HOME}"'
-          			sh 'mvn clean verify -Dmaven.test.failure.ignore=true'
-				} 
-            }
-        }
-        stage('Test') { 
-            steps {
-                // 
-            }
-        }
-        stage('Deploy') { 
-            steps {
-                // 
-            }
-        }
-    }
+node {
+   def mvnHome
+   stage('Code Checkout') { // for display purposes
+      // Get some code from a GitHub repository
+      git 'https://github.com/acmthinks/cloudconfigserver_acc.git'
+      // Get the Maven tool.
+      // ** NOTE: This 'M3' Maven tool must be configured
+      // **       in the global configuration.           
+      mvnHome = tool 'M3'
+   }
+   stage('Build') {
+      // Run the maven build
+      if (isUnix()) {
+         sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package"
+      } else {
+         bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore clean package/)
+      }
+   }
+   stage('Unit Test') {
+      junit '**/target/surefire-reports/TEST-*.xml'
+      archive 'target/*.jar'
+   }
+   stage('Deploy (dev)') {
+      echo "deploy to IBM Cloud (public)"
+   }
 }
