@@ -19,15 +19,15 @@ node {
    stage('Unit Test') {
 	  //run Junit test cases
       junit '**/target/surefire-reports/TEST-*.xml'
-      //package the deployable code into a jar
+      //package the deployable code into a jar (default, $JENKINS_HOME/$WORKSPACE/$JOB
       archive 'target/*.jar'
    }
    stage('Deploy (dev)') {
       //deploy to IBM Cloud (public)
       withCredentials([string(credentialsId: 'BLUEMIX', variable: 'bluemix_api')]) {
-        echo "cf login -a https://api.ng.bluemix.net -u apikey -p $bluemix_api"
       	sh 'cf login -a https://api.ng.bluemix.net -u apikey -p $bluemix_api'
       	sh 'cf target -o acm@us.ibm.com -s dev'
+      	sh 'cf push cloudconfigserveracc'
       	sh 'cf logout'
       }
    }
