@@ -1,5 +1,8 @@
 node {
    def mvnHome
+   def app_name = "cloudconfigserveracc"
+   
+   
    stage('Code Checkout') { // for display purposes
       // Get some code from a GitHub repository
       git 'https://github.com/acmthinks/cloudconfigserver_acc.git'
@@ -19,16 +22,41 @@ node {
    stage('Unit Test') {
 	  //run Junit test cases
       junit '**/target/surefire-reports/TEST-*.xml'
-      //package the deployable code into a jar (default, $JENKINS_HOME/$WORKSPACE/$JOB
+      //package the deployable code into a jar (default, /var/jenkins_home/workspace/<job>)
       archive 'target/*.jar'
    }
    stage('Deploy (dev)') {
       //deploy to IBM Cloud (public)
       withCredentials([string(credentialsId: 'BLUEMIX', variable: 'bluemix_api')]) {
+        //predicated on the fact that cf-cli is installed on Jenkins agent AND cloud foundry plugin is installed in Jenkins
       	sh 'cf login -a https://api.ng.bluemix.net -u apikey -p $bluemix_api'
       	sh 'cf target -o acm@us.ibm.com -s dev'
-      	sh 'cf push cloudconfigserveracc'
+      	sh 'cf push $app_name'
       	sh 'cf logout'
       }
+      echo "http://$app_name.mybluemix.net/ConfigData/local"
+   }
+   stage ('Integration Test') {
+   	  //run integration tests, contract testing, component testing, package/bin scans
+   }
+   stage ('Deploy (QA)') {
+      //deploy to IBM Cloud (public) Container Services (k8s)
+      withCredentials([string(credentialsId: 'BLUEMIX', variable: 'bluemix_api')]) {
+        //predicated on the fact that cf-cli is installed on Jenkins agent AND cloud foundry plugin is installed in Jenkins
+      	sh 'bx login -a https://api.ng.bluemix.net -u apikey -p $bluemix_api'
+      	sh 'bx target -o acm@us.ibm.com -s dev'
+      	sh 'bx dev deploy'
+      	sh 'bx logout'
+      }
+      //activate monitors for QA environment
+      //configure log aggregators
+      echo "http://$app_name.mybluemix.net/ConfigData/local"
+   }
+   stage ('Security/Performance Test') {
+      //run vulnerability scanning, penetration testing
+      //run performance and load testing
+   }
+   stage ('Deploy (Production)') {
+      //deploy to production environment, IBM Cloud Private (k8s)
    }
 }
