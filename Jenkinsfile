@@ -39,30 +39,34 @@ node {
    stage ('Integration Test') {
    	  //run integration tests, contract testing, component testing, package/bin scans
    }
-   stage ('Deploy (QA)') {
-      //deploy to IBM Cloud (public) Container Services (k8s)
-      withCredentials([string(credentialsId: 'BLUEMIX', variable: 'bluemix_api')]) {
-        //predicated on the fact that cf-cli is installed on Jenkins agent AND cloud foundry plugin is installed in Jenkins
-      	sh 'bx login -a https://api.ng.bluemix.net -apikey $bluemix_api'
-      	sh 'bx target -o acm@us.ibm.com -s dev'
-      	//sh 'bx dev build'
-      	//sh 'bx dev deploy'
-      	sh 'bx logout'
-      }
-      //activate monitors for QA environment
-      //configure log aggregators
-      echo "http://${app_name}.mybluemix.net/ConfigData/qa"
-   }
-   stage ('Security/Performance Test') {
-      //run vulnerability scanning, penetration testing
-      //run performance and load testing
+   
+   if (env.BRANCH_NAME == "qa" || env.BRANCH_NAME == "master") { 
+     stage ('Deploy (QA)') {
+        //deploy to IBM Cloud (public) Container Services (k8s)
+        withCredentials([string(credentialsId: 'BLUEMIX', variable: 'bluemix_api')]) {
+          //predicated on the fact that cf-cli is installed on Jenkins agent AND cloud foundry plugin is installed in Jenkins
+      	  sh 'bx login -a https://api.ng.bluemix.net -apikey $bluemix_api'
+      	  sh 'bx target -o acm@us.ibm.com -s dev'
+      	  //sh 'bx dev build'
+      	  //sh 'bx dev deploy'
+      	  sh 'bx logout'
+        }
+        //activate monitors for QA environment
+        //configure log aggregators
+        echo "http://${app_name}.mybluemix.net/ConfigData/qa"
+     }
+
+     stage ('Security/Performance Test') {
+        //run vulnerability scanning, penetration testing
+        //run performance and load testing
+     }
    }
    
-   if (env.BRANCH_NAME != "masters") { 
-   stage ('Deploy (Production)') {
-      //deploy to production environment, IBM Cloud Private (k8s)
-      echo "Branch: ${env.BRANCH_NAME}"
-      echo "http://${app_name}.mybluemix.net/ConfigData/prod"
-   }
+   if (env.BRANCH_NAME == "master") { 
+     stage ('Deploy (Production)') {
+        //deploy to production environment, IBM Cloud Private (k8s)
+        echo "Branch: ${env.BRANCH_NAME}"
+        echo "http://${app_name}.mybluemix.net/ConfigData/prod"
+     }
    }
 }
