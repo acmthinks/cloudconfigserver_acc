@@ -38,13 +38,12 @@ node {
    }
    stage ('Integration Test') {
    	  //run integration tests, contract testing, component testing, package/bin scans
-   	  echo "run integration tests, contract testing, component testing, package/bin scans"
    }
    stage ('Deploy (QA)') {
       //deploy to IBM Cloud (public) Container Services (k8s)
       withCredentials([string(credentialsId: 'BLUEMIX', variable: 'bluemix_api')]) {
         //predicated on the fact that cf-cli is installed on Jenkins agent AND cloud foundry plugin is installed in Jenkins
-      	sh 'bx login -a https://api.ng.bluemix.net -u apikey -p $bluemix_api'
+      	sh 'bx login -a https://api.ng.bluemix.net -apikey $bluemix_api'
       	sh 'bx target -o acm@us.ibm.com -s dev'
       	sh 'bx dev deploy'
       	sh 'bx logout'
