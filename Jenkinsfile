@@ -57,9 +57,9 @@ node {
       //run vulnerability scanning, penetration testing
       //run performance and load testing
    }
-   if (${env.GIT_BRANCH}
    stage ('Deploy (Production)') {
       //deploy to production environment, IBM Cloud Private (k8s)
+      echo "Branch: ${env.GIT_BRANCH}"
       echo "http://${app_name}.mybluemix.net/ConfigData/prod"
    }
 }
