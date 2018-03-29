@@ -58,10 +58,10 @@ node {
       //run performance and load testing
    }
    
-   if (env.GIT_BRANCH != "master") { 
+   if (env.BRANCH_NAME != "masters") { 
    stage ('Deploy (Production)') {
       //deploy to production environment, IBM Cloud Private (k8s)
-      echo "Branch: ${env.GIT_BRANCH}"
+      echo "Branch: ${env.BRANCH_NAME}"
       echo "http://${app_name}.mybluemix.net/ConfigData/prod"
    }
    }
