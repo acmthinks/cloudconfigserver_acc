@@ -58,7 +58,7 @@ node {
       //run performance and load testing
    }
    
-   if (env.GIT_BRANCH == "master") { 
+   if (env.GIT_BRANCH != "master") { 
    stage ('Deploy (Production)') {
       //deploy to production environment, IBM Cloud Private (k8s)
       echo "Branch: ${env.GIT_BRANCH}"
