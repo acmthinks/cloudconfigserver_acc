@@ -45,6 +45,7 @@ node {
         //predicated on the fact that cf-cli is installed on Jenkins agent AND cloud foundry plugin is installed in Jenkins
       	sh 'bx login -a https://api.ng.bluemix.net -apikey $bluemix_api'
       	sh 'bx target -o acm@us.ibm.com -s dev'
+      	sh 'bx dev build'
       	sh 'bx dev deploy'
       	sh 'bx logout'
       }
@@ -56,6 +57,7 @@ node {
       //run vulnerability scanning, penetration testing
       //run performance and load testing
    }
+   if (${env.GIT_BRANCH}
    stage ('Deploy (Production)') {
       //deploy to production environment, IBM Cloud Private (k8s)
       echo "http://${app_name}.mybluemix.net/ConfigData/prod"
