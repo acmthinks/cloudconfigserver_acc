@@ -43,6 +43,7 @@ node {
    if (env.BRANCH_NAME == "qa" || env.BRANCH_NAME == "master") { 
      stage ('Deploy (QA)') {
         //deploy to IBM Cloud (public) Container Services (k8s)
+        echo "Branch: ${env.BRANCH_NAME}"
         withCredentials([string(credentialsId: 'BLUEMIX', variable: 'bluemix_api')]) {
           //predicated on the fact that cf-cli is installed on Jenkins agent AND cloud foundry plugin is installed in Jenkins
       	  sh 'bx login -a https://api.ng.bluemix.net -apikey $bluemix_api'
