@@ -34,10 +34,11 @@ node {
       	sh 'cf push $app_name'
       	sh 'cf logout'
       }
-      echo "http://$app_name.mybluemix.net/ConfigData/local"
+      echo "http://${app_name}.mybluemix.net/ConfigData/dev"
    }
    stage ('Integration Test') {
    	  //run integration tests, contract testing, component testing, package/bin scans
+   	  echo "run integration tests, contract testing, component testing, package/bin scans"
    }
    stage ('Deploy (QA)') {
       //deploy to IBM Cloud (public) Container Services (k8s)
@@ -50,7 +51,7 @@ node {
       }
       //activate monitors for QA environment
       //configure log aggregators
-      echo "http://$app_name.mybluemix.net/ConfigData/local"
+      echo "http://${app_name}.mybluemix.net/ConfigData/qa"
    }
    stage ('Security/Performance Test') {
       //run vulnerability scanning, penetration testing
@@ -58,5 +59,6 @@ node {
    }
    stage ('Deploy (Production)') {
       //deploy to production environment, IBM Cloud Private (k8s)
+      echo "http://${app_name}.mybluemix.net/ConfigData/prod"
    }
 }
